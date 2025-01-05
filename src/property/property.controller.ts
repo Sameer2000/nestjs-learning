@@ -23,12 +23,19 @@ import {
 } from './dto/createPropertyZod.dto';
 import { HeadersDto } from './dto/headers.dto';
 import { RequestHeader } from './pipes/request-headers';
+import { PropertyService } from './property.service';
 
 @Controller('property')
 export class PropertyController {
+  propertyService: PropertyService;
+  constructor() {
+    // don't create your dependency, instead use DI in nestjs
+    this.propertyService = new PropertyService();
+  }
+
   @Get()
   findAll() {
-    return 'All Properties';
+    this.propertyService.findAll();
   }
 
   @Post()
@@ -44,7 +51,7 @@ export class PropertyController {
   // forbidNonWhitelisted - If set to true, instead of stripping non-whitelisted properties validator will throw an error
   @UsePipes(new ZodValidationPipe(createPropertySchema))
   create(@Body() body: CreatePropertyZodDto) {
-    return body;
+    return this.propertyService.create();
   }
 
   // same validation can also be used as
@@ -63,11 +70,11 @@ export class PropertyController {
     @RequestHeader(new ValidationPipe({ validateCustomDecorators: true }))
     header: HeadersDto,
   ) {
-    return header;
+    return this.propertyService.update();
   }
 
   @Get(':id')
   findOne(@Param('id', ParseIntPipe) id, @Query('sort', ParseBoolPipe) sort) {
-    return `${id} & ${sort}`;
+    return this.propertyService.findOne();
   }
 }
