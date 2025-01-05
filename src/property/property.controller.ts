@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Get,
+  Headers,
   //   HttpCode,
   Param,
   ParseBoolPipe,
@@ -20,6 +21,8 @@ import {
   createPropertySchema,
   CreatePropertyZodDto,
 } from './dto/createPropertyZod.dto';
+import { HeadersDto } from './dto/headers.dto';
+import { RequestHeader } from './pipes/request-headers';
 
 @Controller('property')
 export class PropertyController {
@@ -56,10 +59,11 @@ export class PropertyController {
   @Put(':id')
   update(
     @Param('id', ParseIdPipe) id,
-    @Body()
-    body: CreatePropertyDto,
+    @Body() body: CreatePropertyDto,
+    @RequestHeader(new ValidationPipe({ validateCustomDecorators: true }))
+    header: HeadersDto,
   ) {
-    return body;
+    return header;
   }
 
   @Get(':id')
