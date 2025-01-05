@@ -15,6 +15,11 @@ import {
 import { CreatePropertyDto } from './dto/createProperty.dto';
 import { IdParamDto } from './dto/idParam.dto';
 import { ParseIdPipe } from './pipes/parseIdPipe';
+import { ZodValidationPipe } from './pipes/zodvalidationPipe';
+import {
+  createPropertySchema,
+  CreatePropertyZodDto,
+} from './dto/createPropertyZod.dto';
 
 @Controller('property')
 export class PropertyController {
@@ -25,15 +30,17 @@ export class PropertyController {
 
   @Post()
   //   @HttpCode(202)
-  @UsePipes(
-    new ValidationPipe({
-      whitelist: true,
-      forbidNonWhitelisted: true,
-      groups: ['create'],
-    }),
-  ) // whitelist - If set to true validator will strip validated object of any properties that do not have any decorators.
+  //   @UsePipes(
+  //     new ValidationPipe({
+  //       whitelist: true,
+  //       forbidNonWhitelisted: true,
+  //       groups: ['create'],
+  //     }),
+  //   )
+  // whitelist - If set to true validator will strip validated object of any properties that do not have any decorators.
   // forbidNonWhitelisted - If set to true, instead of stripping non-whitelisted properties validator will throw an error
-  create(@Body() body: CreatePropertyDto) {
+  @UsePipes(new ZodValidationPipe(createPropertySchema))
+  create(@Body() body: CreatePropertyZodDto) {
     return body;
   }
 
