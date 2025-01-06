@@ -26,12 +26,14 @@ import { HeadersDto } from './dto/headers.dto';
 import { RequestHeader } from './pipes/request-headers';
 import { PropertyService } from './property.service';
 import { UpdatePropertyDto } from './dto/updateProperty.dto';
+import { Time } from './decorators/time.decorator';
 
 @Controller('property')
 export class PropertyController {
   constructor(private propertyService: PropertyService) {}
 
   @Get()
+  @Time()
   findAll() {
     return this.propertyService.findAll();
   }
