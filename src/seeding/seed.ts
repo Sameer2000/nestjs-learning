@@ -1,4 +1,4 @@
-import { pgConfig } from '../../dbConfig';
+import dbConfig from '../config/db.config';
 import { runSeeders, SeederOptions } from 'typeorm-extension';
 import { PropertyFactory } from './property.factory';
 import { UserFactory } from './user.factory';
@@ -7,7 +7,7 @@ import { DataSource, DataSourceOptions } from 'typeorm';
 import { PropertyFeatureFactory } from './propertyFeature.factory';
 
 const options: DataSourceOptions & SeederOptions = {
-  ...pgConfig,
+  ...dbConfig(),
   factories: [PropertyFactory, UserFactory, PropertyFeatureFactory],
   seeds: [MainSeeder],
 };
