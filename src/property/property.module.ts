@@ -11,7 +11,6 @@ import { Property } from 'src/entities/property.entity';
   providers: [
     {
       provide: APP_PIPE,
-      useClass: ValidationPipe,
       useValue: new ValidationPipe({
         whitelist: true,
         forbidNonWhitelisted: true,
